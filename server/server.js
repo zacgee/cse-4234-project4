@@ -9,11 +9,11 @@ const app = express();
 // Connect to the database
 connectDB();
 
+// Process the JSON file and save the data to the database
+processJsonData();
+
 // Use the recipe routes
 app.use('/api/recipes', recipeRoutes);
-
-// Process the JSON file and save the data to the database
-app.get('/process-json', processJsonData);
 
 // Start the server
 app.listen(3000, () => {
