@@ -1,0 +1,85 @@
+/* Set the background color for the entire page */
+body {
+  background-color: #f2f2f2;
+}
+
+/* Style the top navigation bar */
+.top {
+  display: flex;
+  background-color: white;
+  box-shadow: rgba(242, 242, 242) 1px 2px 3px;
+}
+
+/* Style the navigation buttons */
+.navbutton {
+  border-radius: 5px;
+  background-color: #f2f2f2;
+  border: none;
+  padding: 6px;
+  margin: 10px;
+  margin-left: auto;
+  cursor: pointer;
+  font-size: 10px;
+}
+
+/* Style the message displayed when populating the database */
+.populate-message {
+  padding: 6px;
+  margin: 10px;
+  margin-left: auto;
+  font-size: 1vw;
+}
+
+/* Set the margin for the main app container */
+.app {
+  margin: 2% 3%;
+}
+
+/* Style the app header */
+.app-header {
+  background-color: white;
+}
+/* Style the app header image */
+.app-header img {
+  display: block;
+  max-width: 40%;
+  height: auto;
+  margin-top: 10px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Style the search input field */
+input[type="text"] {
+  width: 200%;
+  box-sizing: border-box;
+  border: 2px solid #ccc;
+  border-radius: 100px;
+  font-size: 1vw;
+  background-color: white;
+  background-image: url('searchicon.png');
+  background-position: 10px 10px;
+  background-repeat: no-repeat;
+  padding: 12px 20px 12px 40px;
+}
+
+/* Style the search input field when focused */
+input[type="text"]:focus {
+  border: solid 1px;
+  outline: solid 4px #82d7f7;
+}
+
+/* Style the main content area */
+main {
+  display: flex;
+  justify-content: center;
+  background-color: white;
+  padding: 5%;
+}
+
+/* Style the form inside the main content area */
+main form {
+  width: 70%;
+  display: flex;
+  justify-content: center;
+}
