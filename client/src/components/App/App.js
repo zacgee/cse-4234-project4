@@ -7,6 +7,7 @@ const App = () => {
     const [recipes, setRecipes] = useState([]);
     const [dbPopulated, setDbPopulated] = useState(false);
     const [populateMessage, setPopulateMessage] = useState('');
+    const [selectedRecipe, setSelectedRecipe] = useState(null);
 
     useEffect(() => {
         fetch('./recipes.json')
@@ -26,6 +27,14 @@ const App = () => {
         .catch(error => console.error('Error populating database:', error));
     };
 
+    const handleRecipeClick = (recipe) => {
+        setSelectedRecipe(recipe);
+    };
+
+    const handleCloseRecipeDetail = () => {
+        setSelectedRecipe(null);
+    };
+
     return (
         <div className="app">
             <header className="app-header">
@@ -43,6 +52,18 @@ const App = () => {
                 </div>
             </header>
 
+            {selectedRecipe && (
+                <div className="recipe-detail-overlay" onClick={handleCloseRecipeDetail}>
+                    <div className="recipe-detail">
+                        {/* Display recipe details */}
+                        <h2>{selectedRecipe.name}</h2>
+                        <img src={selectedRecipe.image} alt={`Recipe for ${selectedRecipe.name}`} />
+                        <p>Description: {selectedRecipe.description}</p>
+                        <p>Ingredients: {selectedRecipe.ingredients.join(', ')}</p>
+                    </div>
+                </div>
+            )}
+
             <main className="show-result">
                 <form>
                     <input type="text" name="search" placeholder="Find Recipe"/>
@@ -51,7 +72,7 @@ const App = () => {
             <main className="show-result">
                 <div className="recipe-cards-container">
                     {recipes.map((recipe, index) => (
-                        <RecipeCard key={index} recipe={recipe} />
+                        <RecipeCard key={index} recipe={recipe} onClick={() => handleRecipeClick(recipe)} />
                     ))}
                 </div>
             </main>

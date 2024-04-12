@@ -1,11 +1,21 @@
-// src/components/RecipeCard.js
-import React from 'react';
+import React, { useState } from 'react';
 import './RecipeCard.css';
 import silhouette_recipe from './Icon.png';
 import { FaEye } from "react-icons/fa";
 import { MdFavorite } from "react-icons/md";
 
-const RecipeCard = ({ recipe }) => {
+const RecipeCard = ({ recipe, onClick }) => {
+    const [showRecipeDetail, setShowRecipeDetail] = useState(false); // State to control visibility of recipe detail
+
+    const handleViewRecipe = () => {
+        setShowRecipeDetail(true); // Show recipe detail when button is clicked
+        onClick(); // Notify App component that this recipe is clicked
+    };
+
+    const handleCloseRecipeDetail = () => {
+        setShowRecipeDetail(false); // Hide recipe detail when closed
+    };
+
     return (
         <div className="recipe-card">
             <img
@@ -21,7 +31,7 @@ const RecipeCard = ({ recipe }) => {
                 <p><strong>CookTime:</strong> {recipe.cookTime}</p>
                 <p><strong>PrepTime:</strong> {recipe.prepTime}</p>
                 <p><strong>Yield:</strong> {recipe.recipeYield}</p>
-                <button className="view-recipe">
+                <button className="view-recipe" onClick={handleViewRecipe}>
                     <FaEye /> View Recipe
                 </button>
                 <button className="add-to-favorites">
