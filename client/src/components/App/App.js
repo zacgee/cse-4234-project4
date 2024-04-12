@@ -15,12 +15,15 @@ const App = () => {
     }, []);
 
     const populateDB = () => {
-        console.log('Populating database with recipes...', recipes);
-
-        setTimeout(() => {
+        fetch('/api/populateDB', {
+            method: 'POST'
+        })
+        .then(response => response.json())
+        .then(data => {
             setDbPopulated(true);
-            setPopulateMessage('782 recipe(s) successfully added to the database');
-        }, 1000);
+            setPopulateMessage(data.message);
+        })
+        .catch(error => console.error('Error populating database:', error));
     };
 
     return (
