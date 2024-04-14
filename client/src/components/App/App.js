@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import "./App.css";
 import logo from './recipe-finder.png';
 import RecipeCard from '../RecipeCard/RecipeCard';
+import { formatTime } from '../RecipeCard/RecipeCard'; 
+import { MdFavorite } from "react-icons/md";
 
 const App = () => {
     const [recipes, setRecipes] = useState([]);
@@ -52,30 +54,40 @@ const App = () => {
                 </div>
             </header>
 
-            {selectedRecipe && (
+            {selectedRecipe ? (
                 <div className="recipe-detail-overlay" onClick={handleCloseRecipeDetail}>
                     <div className="recipe-detail">
                         {/* Display recipe details */}
-                        <h2>{selectedRecipe.name}</h2>
                         <img src={selectedRecipe.image} alt={`Recipe for ${selectedRecipe.name}`} />
-                        <p>Description: {selectedRecipe.description}</p>
-                        <p>Ingredients: {selectedRecipe.ingredients.join(', ')}</p>
+                        <h3>{selectedRecipe.name}</h3>
+                        <p><strong>Cook Time:</strong> {formatTime(selectedRecipe.cookTime)}</p>
+                        <p><strong>Prep Time:</strong> {formatTime(selectedRecipe.prepTime)}</p>
+                        <p><strong>Yield:</strong> {selectedRecipe.recipeYield}</p>
+                        <p>{selectedRecipe.description}</p>
+                        <h3>Ingredients</h3>
+                        <hr></hr>
+                        <ul className="ingredients-list">
+                        {selectedRecipe.ingredients.map((ingredient, index) => (
+                            <li key={index}>
+                                {ingredient}
+                                <button className="add-button">+</button>
+                            </li>
+                        ))}
+                        </ul>
+                        <button className="add-to-favorites">
+                            <MdFavorite /> Add to Favorites
+                        </button>
                     </div>
                 </div>
+            ) : (
+                <main className="show-result">
+                    <div className="recipe-cards-container">
+                        {recipes.map((recipe, index) => (
+                            <RecipeCard key={index} recipe={recipe} onClick={() => handleRecipeClick(recipe)} />
+                        ))}
+                    </div>
+                </main>
             )}
-
-            <main className="show-result">
-                <form>
-                    <input type="text" name="search" placeholder="Find Recipe"/>
-                </form>
-            </main>
-            <main className="show-result">
-                <div className="recipe-cards-container">
-                    {recipes.map((recipe, index) => (
-                        <RecipeCard key={index} recipe={recipe} onClick={() => handleRecipeClick(recipe)} />
-                    ))}
-                </div>
-            </main>
         </div>
     );
 };

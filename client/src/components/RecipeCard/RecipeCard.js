@@ -4,6 +4,28 @@ import silhouette_recipe from './Icon.png';
 import { FaEye } from "react-icons/fa";
 import { MdFavorite } from "react-icons/md";
 
+const parseISO8601Duration = (durationString) => {
+    const regex = /^PT(?:(\d+)H)?(?:(\d+)M)?$/;
+    const match = regex.exec(durationString);
+    if (!match) return NaN;
+    const hours = match[1] ? parseInt(match[1], 10) : 0;
+    const minutes = match[2] ? parseInt(match[2], 10) : 0;
+    return hours * 60 + minutes;
+};
+
+export const formatTime = (durationString) => {
+    const timeInMinutes = parseISO8601Duration(durationString);
+    if (isNaN(timeInMinutes)) {
+        return 'N/A';
+    }
+    const hours = Math.floor(timeInMinutes / 60);
+    const minutes = timeInMinutes % 60;
+    const formattedHours = String(hours).padStart(2, '0'); // Add leading zero if necessary
+    const formattedMinutes = String(minutes).padStart(2, '0'); // Add leading zero if necessary
+    return `${formattedHours}:${formattedMinutes}`;
+};
+
+
 const RecipeCard = ({ recipe, onClick }) => {
     const [showRecipeDetail, setShowRecipeDetail] = useState(false); // State to control visibility of recipe detail
 
@@ -28,8 +50,8 @@ const RecipeCard = ({ recipe, onClick }) => {
             />
             <div className="recipe-details">
                 <h3>{recipe.name}</h3>
-                <p><strong>CookTime:</strong> {recipe.cookTime}</p>
-                <p><strong>PrepTime:</strong> {recipe.prepTime}</p>
+                <p><strong>Cook Time:</strong> {formatTime(recipe.cookTime)}</p>
+                <p><strong>Prep Time:</strong> {formatTime(recipe.prepTime)}</p>
                 <p><strong>Yield:</strong> {recipe.recipeYield}</p>
                 <button className="view-recipe" onClick={handleViewRecipe}>
                     <FaEye /> View Recipe
