@@ -54,6 +54,12 @@ const App = () => {
                 </div>
             </header>
 
+            <main className="show-result">
+                <form>
+                    <input type="text" name="search" placeholder="Find Recipe"/>
+                </form>
+            </main>
+
             {selectedRecipe ? (
                 <div className="recipe-detail-overlay" onClick={handleCloseRecipeDetail}>
                     <div className="recipe-detail">
