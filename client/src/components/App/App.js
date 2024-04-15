@@ -1,7 +1,10 @@
+// App.js
+
 import React, { useState, useEffect } from 'react';
 import "./App.css";
 import logo from './recipe-finder.png';
 import RecipeCard from '../RecipeCard/RecipeCard';
+import Search from '../Search/Search'; // Import the Search component
 import { formatTime } from '../RecipeCard/RecipeCard'; 
 import { MdFavorite } from "react-icons/md";
 
@@ -10,15 +13,16 @@ const App = () => {
     const [dbPopulated, setDbPopulated] = useState(false);
     const [populateMessage, setPopulateMessage] = useState('');
     const [selectedRecipe, setSelectedRecipe] = useState(null);
+    const [searchResults, setSearchResults] = useState([]);
 
     useEffect(() => {
-        fetch('./recipes.json')
+        fetch('../../../recipes.json')
             .then(response => response.json())
             .then(data => setRecipes(data));
     }, []);
 
     const populateDB = () => {
-        fetch('/api/populateDB', {
+        fetch('/api/recipes/populateDB', {
             method: 'POST'
         })
         .then(response => response.json())
@@ -35,6 +39,13 @@ const App = () => {
 
     const handleCloseRecipeDetail = () => {
         setSelectedRecipe(null);
+    };
+
+    const handleSearch = (query) => {
+        fetch(`/api/recipes/search?query=${query}`)
+            .then(response => response.json())
+            .then(data => setSearchResults(data))
+            .catch(error => console.error('Error searching recipes:', error));
     };
 
     return (
@@ -55,9 +66,7 @@ const App = () => {
             </header>
 
             <main className="show-result">
-                <form>
-                    <input type="text" name="search" placeholder="Find Recipe"/>
-                </form>
+                <Search onSearch={handleSearch} /> {/* Render the Search component */}
             </main>
 
             {selectedRecipe ? (
@@ -88,9 +97,15 @@ const App = () => {
             ) : (
                 <main className="show-result">
                     <div className="recipe-cards-container">
-                        {recipes.map((recipe, index) => (
-                            <RecipeCard key={index} recipe={recipe} onClick={() => handleRecipeClick(recipe)} />
-                        ))}
+                        {searchResults.length > 0 ? (
+                            searchResults.map((recipe, index) => (
+                                <RecipeCard key={index} recipe={recipe} onClick={() => handleRecipeClick(recipe)} />
+                            ))
+                        ) : (
+                            recipes.map((recipe, index) => (
+                                <RecipeCard key={index} recipe={recipe} onClick={() => handleRecipeClick(recipe)} />
+                            ))
+                        )}
                     </div>
                 </main>
             )}
